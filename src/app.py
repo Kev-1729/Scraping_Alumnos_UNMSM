@@ -29,7 +29,7 @@ def obtener_datos_por_codigo(codigo, driver):
 def obtener_datos(driver, rango_inicial, rango_final):
     datos = []
     
-    for codigo in range(rango_inicial, rango_final):
+    for codigo in range(rango_inicial, rango_final+1):
         time.sleep(0.5)
         datos_codigo = obtener_datos_por_codigo(codigo, driver)
         
