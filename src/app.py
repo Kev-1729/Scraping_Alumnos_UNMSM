@@ -1,9 +1,7 @@
-from flask import Flask, jsonify
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
-
-app = Flask(__name__)
+import json
 
 def init_driver():
     driver = webdriver.Edge()
@@ -40,16 +38,19 @@ def obtener_datos(driver, rango_inicial, rango_final):
     
     return datos
 
-@app.route('/api/datos', methods=['GET'])
-def api_datos():
+def main():
+    inicio = int(input("Desde: "))
+    final = int(input("Hasta: "))
+    # inicio tiene que ser menor que final
     driver = init_driver()
     web_site = "http://websecgen.unmsm.edu.pe/carne/carne.aspx"
     driver.get(web_site)
-
-    datos = obtener_datos(driver, 21200000, 21200015)
-    
+    datos = obtener_datos(driver, inicio, final)
     driver.quit()
-    return jsonify(datos)
+    
+    # Guardar en un archivo JSON
+    with open("datos.json", "w", encoding="utf-8") as archivo:
+        json.dump(datos, archivo, ensure_ascii=False, indent=4)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    main()
